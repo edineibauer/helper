@@ -13,16 +13,22 @@ class Convert
 
     /**
      * <b>Tranforma URL:</b> Tranforma uma string no formato de URL amigável e retorna o a string convertida!
-     * @param STRING $Name = Uma string qualquer
-     * @return STRING
+     *
+     * @param string $name
+     * @param array $escape
+     * @return mixed
      */
-    public static function name($Name)
+    public static function name(string $name, array $escape = [])
     {
         $f = array();
         $f['a'] = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜüÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿRr|"!@#$%&*()_-+={[}]/?;:.,\\\'<>°ºª¹²³£¢¬™®★’`§☆●•…”“’‘♥♡■◎≈◉';
         $f['b'] = "aaaaaaaceeeeiiiidnoooooouuuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr                                                            ";
 
-        $data = strtr(utf8_decode($Name), utf8_decode($f['a']), $f['b']);
+        //escape some chars
+        if ($escape)
+            $f['a'] = str_replace($escape, "", $f['a']);
+
+        $data = strtr(utf8_decode($name), utf8_decode($f['a']), $f['b']);
         $data = strip_tags(trim($data));
         $data = str_replace(' ', '-', $data);
         $data = str_replace(array('-----', '----', '---', '--'), '-', $data);
