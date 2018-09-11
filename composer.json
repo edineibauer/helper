@@ -1,0 +1,21 @@
+{
+  "name": "single/helper",
+  "description": "Conjunto de ferramentas com funções comumentes utilizadas pelo Single FrameWork",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Edinei J. Bauer",
+      "email": "edineibauer@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.0",
+    "ext-json": "^1"
+  },
+  "autoload": {
+    "psr-0": {
+      "Helper": "src/"
+    }
+  }
+}
