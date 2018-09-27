@@ -103,6 +103,42 @@ class Helper
         return false;
     }
 
+    /**
+     * Realiza Requests para API com retorno do tipo json
+     *
+     * @param string $url
+     * @param array $data
+     * @return array
+     */
+    public static function api(string $url, array $data = []): array
+    {
+        $store = null;
+        $url = str_replace("&amp;", "&", urldecode(trim($url)));
+        $cookie = tempnam("/tmp", "CURLCOOKIE");
+        try {
+            $ch = curl_init($url);
+            curl_setopt_array($ch, array(
+                CURLOPT_POST => TRUE,
+                CURLOPT_RETURNTRANSFER => TRUE,
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+                CURLOPT_POSTFIELDS => $cookie,
+                CURLOPT_POSTFIELDS => json_encode($data)
+            ));
+            $store = curl_exec($ch);
+
+            if ($store === false)
+                return ['response' => 2, 'error' => curl_error($ch), 'data' => ''];
+
+            curl_close($ch);
+
+            return ['response' => 1, 'error' => '', 'data' => json_decode($store, true)];
+        } catch (\Exception $e) {
+            return ['response' => 2, 'error' => 'requisição falhou', 'data' => ''];
+        }
+    }
+
     public static function createFolderIfNoExist($folder)
     {
         if (!file_exists($folder) && !is_dir($folder))
